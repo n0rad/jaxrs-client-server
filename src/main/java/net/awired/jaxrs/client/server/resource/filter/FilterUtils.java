@@ -30,7 +30,7 @@ import org.apache.cxf.jaxrs.provider.ProviderFactory;
 import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
 
-public class AjslFilterUtils {
+public class FilterUtils {
 
     /**
      * That sux but I cannot found another way to do it
