@@ -6,7 +6,7 @@
 	<artifactId>jaxrs-client-server</artifactId>
 	<packaging>jar</packaging>
 	<name>Jaxrs client server</name>
-	<description>Client and Server jax-rs builder allowing pure java method calls to communicate using proxies</description>
+	<description>Jax-rs client and server builder allowing pure java method calls to communicate using proxies</description>
 	<version>0.5-SNAPSHOT</version>
 
 	<parent>
