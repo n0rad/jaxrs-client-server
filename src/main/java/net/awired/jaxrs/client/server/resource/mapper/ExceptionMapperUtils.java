@@ -1,10 +1,10 @@
-package net.awired.ajsl.ws.resource.mapper;
+package net.awired.jaxrs.client.server.resource.mapper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
-import net.awired.ajsl.ws.resource.Error;
+import net.awired.jaxrs.client.server.resource.Error;
 import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;

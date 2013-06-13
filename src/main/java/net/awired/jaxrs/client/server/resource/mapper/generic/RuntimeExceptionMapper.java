@@ -1,12 +1,12 @@
-package net.awired.ajsl.ws.resource.mapper.generic;
+package net.awired.jaxrs.client.server.resource.mapper.generic;
 
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
-import static net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils.buildError;
-import static net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils.findMediaType;
+import static net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.buildError;
+import static net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import net.awired.ajsl.ws.resource.Error;
+import net.awired.jaxrs.client.server.resource.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

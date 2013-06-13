@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.resource;
+package net.awired.jaxrs.client.server.resource;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

@@ -1,12 +1,12 @@
-package net.awired.ajsl.ws.resource.mapper.generic;
+package net.awired.jaxrs.client.server.resource.mapper.generic;
 
-import static net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils.findMediaType;
+import static net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils;
+import net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

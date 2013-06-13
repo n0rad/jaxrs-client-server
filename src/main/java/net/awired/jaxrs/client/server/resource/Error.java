@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.resource;
+package net.awired.jaxrs.client.server.resource;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

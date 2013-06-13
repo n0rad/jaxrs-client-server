@@ -1,7 +1,7 @@
-package net.awired.ajsl.ws.resource.mapper;
+package net.awired.jaxrs.client.server.resource.mapper;
 
-import static net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils.buildError;
-import static net.awired.ajsl.ws.resource.mapper.ExceptionMapperUtils.findMediaType;
+import static net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.buildError;
+import static net.awired.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 import javax.validation.ValidationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;

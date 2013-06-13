@@ -2,47 +2,52 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.awired.jaxrs-client-server</groupId>
+	<groupId>net.awired.jaxrs.client.server</groupId>
 	<artifactId>jaxrs-client-server</artifactId>
 	<packaging>jar</packaging>
 	<name>Jaxrs client server</name>
 	<description>Client and Server jax-rs builder allowing pure java method calls to communicate using proxies</description>
 	<version>0.5-SNAPSHOT</version>
 
-    <parent>
-        <groupId>net.awired.parent</groupId>
-        <artifactId>parent-java</artifactId>
-        <version>1.16</version>
-    </parent>
+	<parent>
+		<groupId>net.awired.parent</groupId>
+		<artifactId>parent-java</artifactId>
+		<version>1.16</version>
+	</parent>
 
 
 	<dependencies>
-        <dependency>
-            <groupId>net.awired.core</groupId>
-            <artifactId>core</artifactId>
-            <version>0.5-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>net.awired.core</groupId>
+			<artifactId>core</artifactId>
+			<version>0.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.awired.jaxrs.oauth2</groupId>
+			<artifactId>jaxrs-oauth2</artifactId>
+			<version>0.5-SNAPSHOT</version>
+		</dependency>
 
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Alpha1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0-m10</version>
-        </dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Alpha1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0-m10</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 			<version>2.7.5</version>
 		</dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.1.4</version>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>2.1.4</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -58,15 +63,27 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>3.1.3.RELEASE</version>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>3.1.3.RELEASE</version>
+			<optional>true</optional>
+		</dependency>
 
 
-        <!-- TEST -->
+		<!-- TEST -->
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert-core</artifactId>
+			<version>2.0M10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>

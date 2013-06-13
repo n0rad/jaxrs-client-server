@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.resource.mapper.generic;
+package net.awired.jaxrs.client.server.resource.mapper.generic;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import net.awired.ajsl.ws.resource.Error;
+import net.awired.jaxrs.client.server.resource.Error;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.client.ResponseExceptionMapper;

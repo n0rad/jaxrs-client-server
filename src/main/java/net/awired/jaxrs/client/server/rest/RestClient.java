@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.rest;
+package net.awired.jaxrs.client.server.rest;
 
 public class RestClient {
 

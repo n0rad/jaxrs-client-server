@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.resource;
+package net.awired.jaxrs.client.server.resource;
 
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.core.userdetails.UserDetails;

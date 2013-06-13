@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.resource.filter;
+package net.awired.jaxrs.client.server.resource.filter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,15 +20,15 @@ public class AjslFilterUtils {
      * That sux but I cannot found another way to do it
      */
     private static byte[] buildErrorPayload(Response excResponse, Message message) {
-        MessageBodyWriter<net.awired.ajsl.ws.resource.Error> createMessageBodyWriter = ProviderFactory.getInstance(
-                message).createMessageBodyWriter(net.awired.ajsl.ws.resource.Error.class,
-                net.awired.ajsl.ws.resource.Error.class, new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE,
+        MessageBodyWriter<net.awired.jaxrs.client.server.resource.Error> createMessageBodyWriter = ProviderFactory.getInstance(
+                message).createMessageBodyWriter(net.awired.jaxrs.client.server.resource.Error.class,
+                net.awired.jaxrs.client.server.resource.Error.class, new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE,
                 message);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
-            createMessageBodyWriter.writeTo((net.awired.ajsl.ws.resource.Error) excResponse.getEntity(),
-                    net.awired.ajsl.ws.resource.Error.class, net.awired.ajsl.ws.resource.Error.class,
+            createMessageBodyWriter.writeTo((net.awired.jaxrs.client.server.resource.Error) excResponse.getEntity(),
+                    net.awired.jaxrs.client.server.resource.Error.class, net.awired.jaxrs.client.server.resource.Error.class,
                     new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE, excResponse.getMetadata(),
                     byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();

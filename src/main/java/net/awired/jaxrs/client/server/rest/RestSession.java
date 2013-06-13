@@ -1,9 +1,9 @@
-package net.awired.ajsl.ws.rest;
+package net.awired.jaxrs.client.server.rest;
 
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.MediaType;
-import net.awired.ajsl.security.Token;
+import net.awired.jaxrs.oauth2.Token;
 
 @SuppressWarnings("unchecked")
 public class RestSession<SESSION extends RestSession<SESSION, CLIENT>, CLIENT extends RestClient> {

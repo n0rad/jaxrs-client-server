@@ -1,4 +1,4 @@
-package net.awired.ajsl.ws.rest;
+package net.awired.jaxrs.client.server.rest;
 
 import static java.util.Arrays.asList;
 import java.util.ArrayList;
@@ -6,12 +6,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
-import net.awired.ajsl.ws.resource.mapper.NotFoundExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.UpdateExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.ValidationExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.generic.GenericExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.generic.GenericResponseExceptionMapper;
-import net.awired.ajsl.ws.resource.mapper.generic.RuntimeExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.NotFoundExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.UpdateExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.ValidationExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.generic.GenericExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.generic.GenericResponseExceptionMapper;
+import net.awired.jaxrs.client.server.resource.mapper.generic.RuntimeExceptionMapper;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.Interceptor;

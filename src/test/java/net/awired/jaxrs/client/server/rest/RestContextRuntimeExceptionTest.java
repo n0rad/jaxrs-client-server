@@ -1,7 +1,9 @@
-package net.awired.ajsl.ws.rest;
+package net.awired.jaxrs.client.server.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import net.awired.jaxrs.client.server.rest.RestBuilder;
+import net.awired.jaxrs.client.server.rest.RestSession;
 import org.junit.Test;
 
 public class RestContextRuntimeExceptionTest {

@@ -1,9 +1,11 @@
-package net.awired.ajsl.ws.rest;
+package net.awired.jaxrs.client.server.rest;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
+import net.awired.jaxrs.client.server.rest.RestBuilder;
+import net.awired.jaxrs.client.server.rest.RestSession;
 import org.junit.Test;
 
 public class RestContextTest {
