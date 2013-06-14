@@ -20,13 +20,11 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
-import net.awired.jaxrs.client.server.rest.RestBuilder;
-import net.awired.jaxrs.client.server.rest.RestSession;
 import org.junit.Test;
 
-public class RestContextTest {
+public class RestBuilderTest {
 
-    private String url = "http://127.0.0.1:8080";
+    private String url = "http://127.0.0.1:54632";
     private RestBuilder context = new RestBuilder();
 
     @XmlRootElement

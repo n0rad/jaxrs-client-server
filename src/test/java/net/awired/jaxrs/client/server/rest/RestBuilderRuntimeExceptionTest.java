@@ -20,12 +20,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import org.junit.Test;
 
-public class RestContextRuntimeExceptionTest {
+public class RestBuilderRuntimeExceptionTest {
 
-    private String url = "http://127.0.0.1:8080";
+    private String url = "http://127.0.0.1:54632";
     private RestBuilder context = new RestBuilder();
 
-    public RestContextRuntimeExceptionTest() {
+    public RestBuilderRuntimeExceptionTest() {
         context.withExceptionMapper();
     }
 

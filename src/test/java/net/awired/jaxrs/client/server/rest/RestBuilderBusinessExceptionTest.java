@@ -21,12 +21,12 @@ import javax.ws.rs.Path;
 import net.awired.core.lang.exception.NotFoundException;
 import org.junit.Test;
 
-public class RestContextBusinessExceptionTest {
+public class RestBuilderBusinessExceptionTest {
 
-    private String url = "http://127.0.0.1:8080";
+    private String url = "http://127.0.0.1:54632";
     private RestBuilder context = new RestBuilder();
 
-    public RestContextBusinessExceptionTest() {
+    public RestBuilderBusinessExceptionTest() {
         context.withExceptionMapper();
     }
 
