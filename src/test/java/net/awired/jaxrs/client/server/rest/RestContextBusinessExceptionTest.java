@@ -46,7 +46,7 @@ public class RestContextBusinessExceptionTest {
     @Test(expected = NotFoundException.class)
     public void should_receive_custom_exception_in_json() throws Exception {
         context.buildServer(url, new UsersService());
-        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession<>().asJson());
+        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         resource.getUser();
     }
@@ -54,7 +54,7 @@ public class RestContextBusinessExceptionTest {
     @Test(expected = NotFoundException.class)
     public void should_receive_custom_exception_in_xml() throws Exception {
         context.buildServer(url, new UsersService());
-        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession<>().asXml());
+        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         resource.getUser();
     }
