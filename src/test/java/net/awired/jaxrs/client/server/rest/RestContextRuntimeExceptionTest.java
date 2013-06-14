@@ -18,8 +18,6 @@ package net.awired.jaxrs.client.server.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import net.awired.jaxrs.client.server.rest.RestBuilder;
-import net.awired.jaxrs.client.server.rest.RestSession;
 import org.junit.Test;
 
 public class RestContextRuntimeExceptionTest {
@@ -47,7 +45,7 @@ public class RestContextRuntimeExceptionTest {
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_json() throws Exception {
         context.buildServer(url, new UsersService());
-        UsersResource resource = context.buildClient(UsersResource.class, url);
+        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession<>().asJson());
 
         resource.getUser();
     }
@@ -55,7 +53,7 @@ public class RestContextRuntimeExceptionTest {
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_xml() throws Exception {
         context.buildServer(url, new UsersService());
-        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
+        UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession<>().asXml());
 
         resource.getUser();
     }
