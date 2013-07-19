@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.awired.jaxrs.client.server</groupId>
+	<groupId>fr.norad.jaxrs.client.server</groupId>
 	<artifactId>jaxrs-client-server</artifactId>
 	<packaging>jar</packaging>
 	<name>Jaxrs client server</name>
@@ -10,20 +10,20 @@
 	<version>0.5-SNAPSHOT</version>
 
 	<parent>
-		<groupId>net.awired.parent</groupId>
+		<groupId>fr.norad.parent</groupId>
 		<artifactId>parent-java</artifactId>
-		<version>1.16</version>
+		<version>1.17-SNAPSHOT</version>
 	</parent>
 
 
 	<dependencies>
 		<dependency>
-			<groupId>net.awired.core</groupId>
+			<groupId>fr.norad.core</groupId>
 			<artifactId>core</artifactId>
-			<version>0.5-SNAPSHOT</version>
+			<version>0.7-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>net.awired.jaxrs.oauth2</groupId>
+			<groupId>fr.norad.jaxrs.oauth2</groupId>
 			<artifactId>jaxrs-oauth2</artifactId>
 			<version>0.5-SNAPSHOT</version>
 		</dependency>
