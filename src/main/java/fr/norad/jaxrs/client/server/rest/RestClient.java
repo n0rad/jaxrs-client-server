@@ -1,6 +1,6 @@
 /**
  *
- *     Copyright (C) Awired.net
+ *     Copyright (C) norad.fr
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -16,34 +16,20 @@
  */
 package fr.norad.jaxrs.client.server.rest;
 
+import lombok.Data;
+
+@Data
 public class RestClient {
 
     private String name;
+    private String secret;
 
     public RestClient(String name, String secret) {
         this.name = name;
         this.secret = secret;
     }
 
-    private String secret;
-
     public RestClient() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
     }
 
 }

@@ -1,6 +1,6 @@
 /**
  *
- *     Copyright (C) Awired.net
+ *     Copyright (C) norad.fr
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@ package fr.norad.jaxrs.client.server.rest;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.core.MediaType;
-import fr.norad.jaxrs.oauth2.Token;
+import lombok.Data;
 
-@SuppressWarnings("unchecked")
+@Data
 public class RestSession<SESSION extends RestSession<SESSION, CLIENT>, CLIENT extends RestClient> {
 
     private String sessionId;
     private MediaType contentType;
     private MediaType acceptType;
-    private Token token;
+    //    private Token token;
     private CLIENT client;
-    private Map<String, String> headers = new HashMap<String, String>();
+    private Map<String, String> headers = new HashMap<>();
 
     public SESSION asJson() {
         contentType = MediaType.APPLICATION_JSON_TYPE;
@@ -48,55 +48,9 @@ public class RestSession<SESSION extends RestSession<SESSION, CLIENT>, CLIENT ex
         return (SESSION) this;
     }
 
-    ///////////////////////////////////////////
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public MediaType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(MediaType contentType) {
-        this.contentType = contentType;
-    }
-
-    public MediaType getAcceptType() {
-        return acceptType;
-    }
-
-    public void setAcceptType(MediaType acceptType) {
-        this.acceptType = acceptType;
-    }
-
-    public Token getToken() {
-        return token;
-    }
-
-    public void setToken(Token token) {
-        this.token = token;
-    }
-
-    public CLIENT getClient() {
-        return client;
-    }
-
     public SESSION client(CLIENT client) {
         this.client = client;
         return (SESSION) this;
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
     }
 
 }

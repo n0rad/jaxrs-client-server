@@ -1,6 +1,6 @@
 /**
  *
- *     Copyright (C) Awired.net
+ *     Copyright (C) norad.fr
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -56,9 +56,9 @@ public class RestBuilder {
     private LoggingInInterceptor inLogger;
     private LoggingOutInterceptor outLogger;
     private JacksonJsonProvider jacksonJsonProvider;
-    private final List<Object> providers = new ArrayList<Object>();
-    private final List<Interceptor<? extends Message>> inInterceptors = new ArrayList<Interceptor<? extends Message>>();
-    private final List<Interceptor<? extends Message>> outInterceptors = new ArrayList<Interceptor<? extends Message>>();
+    private final List<Object> providers = new ArrayList<>();
+    private final List<Interceptor<? extends Message>> inInterceptors = new ArrayList<>();
+    private final List<Interceptor<? extends Message>> outInterceptors = new ArrayList<>();
 
     public RestBuilder() {
         inLogger = new LoggingInInterceptor();
@@ -115,7 +115,7 @@ public class RestBuilder {
         return buildClient(clazz, connectionUrl, new RestSession());
     }
 
-    public <T> T buildClient(Class<T> clazz, String connectionUrl, RestSession session) {
+    public <T> T buildClient(Class<T> clazz, String connectionUrl, RestSession<?, ?> session) {
         JAXRSClientFactoryBean cf = new JAXRSClientFactoryBean();
         prepareFactory(connectionUrl, cf);
         cf.setResourceClass(clazz);
@@ -138,7 +138,7 @@ public class RestBuilder {
         JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         prepareFactory(listenUrl, sf);
 
-        sf.setServiceBeans(new ArrayList<Object>(resources));
+        sf.setServiceBeans(new ArrayList<>(resources));
         //        factory.setResourceClasses(resources);
         sf.setAddress(listenUrl);
         return sf.create();
@@ -158,7 +158,7 @@ public class RestBuilder {
         f.setAddress(address);
     }
 
-    protected void prepareClient(RestSession session, Client client) {
+    protected void prepareClient(RestSession<?, ?> session, Client client) {
         if (session.getAcceptType() != null) {
             client.accept(session.getAcceptType());
         }
@@ -169,9 +169,9 @@ public class RestBuilder {
             client.header(HttpHeaders.COOKIE, "JSESSIONID=" + session.getSessionId());
             //        headers.put("Cookie2", "$Version=1");
         }
-        if (session.getToken() != null) {
-            client.header(HttpHeaders.AUTHORIZATION, "Bearer " + session.getToken().getAccessToken());
-        }
+        //        if (session.getToken() != null) {
+        //            client.header(HttpHeaders.AUTHORIZATION, "Bearer " + session.getToken().getAccessToken());
+        //        }
         Map<String, String> headers = session.getHeaders();
         for (String key : headers.keySet()) {
             client.header(key, headers.get(key));

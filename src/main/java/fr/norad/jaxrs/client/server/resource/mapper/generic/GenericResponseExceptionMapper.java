@@ -1,6 +1,6 @@
 /**
  *
- *     Copyright (C) Awired.net
+ *     Copyright (C) norad.fr
  *
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
  */
 package fr.norad.jaxrs.client.server.resource.mapper.generic;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -29,8 +31,6 @@ import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.client.ResponseExceptionMapper;
 import fr.norad.jaxrs.client.server.resource.Error;
 
@@ -54,7 +54,7 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         String contentType = (String) r.getMetadata().getFirst(HttpHeaders.CONTENT_TYPE);
         String content;
         try {
-            content = IOUtils.toString((InputStream) r.getEntity(), "UTF-8");
+            content = fromStream((InputStream) r.getEntity());
         } catch (IOException e1) {
             throw new RuntimeException("Cannot read content of errorModel", e1);
         }
@@ -85,11 +85,11 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         if (error.getException() != null) {
             try {
                 exception = error.getException().getConstructor(String.class)
-                        .newInstance(StringUtils.defaultString(error.getMessage()));
+                        .newInstance(error.getMessage() == null ? "" : error.getMessage());
             } catch (Exception e) {
                 try {
                     exception = (Exception) error.getException().getSuperclass().getConstructor(String.class)
-                            .newInstance(StringUtils.defaultString(error.getMessage()));
+                            .newInstance(error.getMessage() == null ? "" : error.getMessage());
                 } catch (Exception e2) {
                     throw new RuntimeException("Cannot Create Exception from Error : " + error, e);
                 }
@@ -98,5 +98,15 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
             exception = new RuntimeException(error.getMessage() == null ? SERVER_ERROR : error.getMessage());
         }
         return exception;
+    }
+
+    private static String fromStream(InputStream in) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line);
+        }
+        return out.toString();
     }
 }
