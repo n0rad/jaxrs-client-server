@@ -21,8 +21,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.junit.Test;
-import fr.norad.jaxrs.client.server.rest.RestBuilder;
-import fr.norad.jaxrs.client.server.rest.RestSession;
 
 public class RestBuilderTest {
 
