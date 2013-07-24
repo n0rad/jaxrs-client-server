@@ -41,4 +41,9 @@ and in a shell :
 
 # More advanced description on how to use it
 
+You should be working with 3 seperated projects :
+- api: containing the POJO payload, exceptions and JAX-RS interface 
+- server: depending on the api and is implementing the JAX-RS interface
+- client: also depending on the api and is using the interface to create the client proxy
+
 
