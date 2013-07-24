@@ -9,7 +9,7 @@ Supported features :
 - support JSON and XML by default
 - some more deeper stuff...
 
-# Fast description
+## Fast description
 
     @Path("/")
     private interface HelloResource {
@@ -24,7 +24,7 @@ Supported features :
         }
     }
 
-## Create server
+#### Create server
 
     new RestBuilder().buildServer("http://localhost:4242", new UsersService());
     
@@ -34,7 +34,7 @@ and in a shell :
     Hello!    
     localhost ~ $ 
 
-## Create client
+#### Create client
 
     HelloResource helloResource = new RestBuilder().buildClient(HelloResource.class, "http://localhost:4242");
     String hello = helloResource.getHello();
