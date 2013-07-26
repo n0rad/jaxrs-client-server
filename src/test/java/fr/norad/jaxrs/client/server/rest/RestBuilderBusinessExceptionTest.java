@@ -18,6 +18,8 @@ package fr.norad.jaxrs.client.server.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import org.apache.cxf.endpoint.Server;
+import org.junit.After;
 import org.junit.Test;
 import fr.norad.core.lang.exception.NotFoundException;
 
@@ -25,6 +27,13 @@ public class RestBuilderBusinessExceptionTest {
 
     private String url = "http://127.0.0.1:54632";
     private RestBuilder context = new RestBuilder();
+
+    Server buildServer;
+
+    @After
+    public void after() {
+        buildServer.stop();
+    }
 
     public RestBuilderBusinessExceptionTest() {
         context.withExceptionMapper();
@@ -45,7 +54,7 @@ public class RestBuilderBusinessExceptionTest {
 
     @Test(expected = NotFoundException.class)
     public void should_receive_custom_exception_in_json() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         resource.getUser();
@@ -53,7 +62,7 @@ public class RestBuilderBusinessExceptionTest {
 
     @Test(expected = NotFoundException.class)
     public void should_receive_custom_exception_in_xml() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         resource.getUser();

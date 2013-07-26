@@ -20,6 +20,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.cxf.endpoint.Server;
+import org.junit.After;
 import org.junit.Test;
 
 public class RestBuilderTest {
@@ -31,6 +33,13 @@ public class RestBuilderTest {
     public static class User {
         public String firstname = "Arnaud";
         public String lastname = "Lemaire";
+    }
+
+    Server buildServer;
+
+    @After
+    public void after() {
+        buildServer.stop();
     }
 
     @Path("/")
@@ -48,7 +57,7 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_default() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url);
 
         User user = resource.getUser();
@@ -58,7 +67,7 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_xml() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         User user = resource.getUser();
@@ -68,7 +77,7 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_json() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         User user = resource.getUser();

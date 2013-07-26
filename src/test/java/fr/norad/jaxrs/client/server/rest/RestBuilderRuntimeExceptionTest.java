@@ -18,9 +18,9 @@ package fr.norad.jaxrs.client.server.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import org.apache.cxf.endpoint.Server;
+import org.junit.After;
 import org.junit.Test;
-import fr.norad.jaxrs.client.server.rest.RestBuilder;
-import fr.norad.jaxrs.client.server.rest.RestSession;
 
 public class RestBuilderRuntimeExceptionTest {
 
@@ -29,6 +29,13 @@ public class RestBuilderRuntimeExceptionTest {
 
     public RestBuilderRuntimeExceptionTest() {
         context.withExceptionMapper();
+    }
+
+    Server buildServer;
+
+    @After
+    public void after() {
+        buildServer.stop();
     }
 
     @Path("/")
@@ -46,7 +53,7 @@ public class RestBuilderRuntimeExceptionTest {
 
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_json() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         resource.getUser();
@@ -54,7 +61,7 @@ public class RestBuilderRuntimeExceptionTest {
 
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_xml() throws Exception {
-        context.buildServer(url, new UsersService());
+        buildServer = context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         resource.getUser();

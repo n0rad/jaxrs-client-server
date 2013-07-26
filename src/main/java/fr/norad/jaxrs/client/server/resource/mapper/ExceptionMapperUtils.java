@@ -45,8 +45,7 @@ public final class ExceptionMapperUtils {
 
     public static MediaType findMediaType() {
         Message msg = PhaseInterceptorChain.getCurrentMessage();
-        List<MediaType> acceptContentType = JAXRSUtils.sortMediaTypes((String) msg.get(Message.ACCEPT_CONTENT_TYPE),
-                null);
+        List<MediaType> acceptContentType = JAXRSUtils.sortMediaTypes((String) msg.get(Message.ACCEPT_CONTENT_TYPE));
         for (MediaType mediaType : acceptContentType) {
             if (mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)
                     || mediaType.isCompatible(MediaType.APPLICATION_XML_TYPE)) {
