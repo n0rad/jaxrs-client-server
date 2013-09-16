@@ -21,7 +21,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
-import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils;
@@ -32,9 +31,7 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
     @Override
     public Response toResponse(WebApplicationException ex) {
-        if (ex.getClass().isAssignableFrom(ServerWebApplicationException.class)) {
-            log.warn("Respond Web Server Error Exception", ex);
-        } else if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Respond Web Exception", ex);
         } else {
             log.info("Respond Web Exception : {}", ex.getMessage());

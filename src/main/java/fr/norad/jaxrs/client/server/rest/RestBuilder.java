@@ -34,14 +34,12 @@ import org.apache.cxf.jaxrs.client.Client;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.message.Message;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.AnnotationIntrospector;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
+import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 import fr.norad.jaxrs.client.server.resource.mapper.NotFoundExceptionMapper;
 import fr.norad.jaxrs.client.server.resource.mapper.UpdateExceptionMapper;
 import fr.norad.jaxrs.client.server.resource.mapper.ValidationExceptionMapper;
@@ -68,9 +66,9 @@ public class RestBuilder {
         outLogger.setPrettyLogging(true);
         outLogger.setOutputLocation("<stderr>");
 
-        ObjectMapper restfullObjectMapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
-        AnnotationIntrospector pair = new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(),
-                new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
+        ObjectMapper restfullObjectMapper = new ObjectMapper().setSerializationInclusion(Inclusion.NON_NULL);
+        AnnotationIntrospector pair = new AnnotationIntrospector.Pair(new JacksonAnnotationIntrospector(),
+                new JaxbAnnotationIntrospector());
         restfullObjectMapper.setAnnotationIntrospector(pair);
         jacksonJsonProvider = new JacksonJsonProvider();
         jacksonJsonProvider.setMapper(restfullObjectMapper);
