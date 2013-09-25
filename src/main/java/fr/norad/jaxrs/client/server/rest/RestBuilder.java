@@ -77,7 +77,7 @@ public class RestBuilder {
         providers.add(jacksonJsonProvider);
     }
 
-    public void withExceptionMapper() {
+    public RestBuilder withExceptionMapper() {
         responseExceptionMapper = new GenericResponseExceptionMapper(jacksonJsonProvider);
         providers.add(responseExceptionMapper);
         providers.add(new GenericExceptionMapper());
@@ -85,6 +85,7 @@ public class RestBuilder {
         providers.add(new UpdateExceptionMapper());
         providers.add(new RuntimeExceptionMapper());
         providers.add(new ValidationExceptionMapper());
+        return this;
     }
 
     public void addProvider(Object provider) {
