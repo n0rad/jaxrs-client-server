@@ -52,6 +52,7 @@ import fr.norad.jaxrs.client.server.resource.mapper.generic.RuntimeExceptionMapp
 public class RestBuilder {
 
     private boolean logExchange = true;
+    private boolean threadSafe;
     private GenericResponseExceptionMapper responseExceptionMapper;
     private LoggingInInterceptor inLogger;
     private LoggingOutInterceptor outLogger;
@@ -88,6 +89,11 @@ public class RestBuilder {
         return this;
     }
 
+    public RestBuilder threadSafe(){
+        threadSafe = true;
+        return this;
+    }
+
     public void addProvider(Object provider) {
         this.providers.add(provider);
     }
@@ -118,6 +124,7 @@ public class RestBuilder {
 
     public <T> T buildClient(Class<T> clazz, String connectionUrl, RestSession<?, ?> session) {
         JAXRSClientFactoryBean cf = new JAXRSClientFactoryBean();
+        cf.setThreadSafe(threadSafe);
         prepareFactory(connectionUrl, cf);
         cf.setResourceClass(clazz);
         BindingFactoryManager manager = cf.getBus().getExtension(BindingFactoryManager.class);
