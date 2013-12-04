@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>fr.norad.core</groupId>
 			<artifactId>core</artifactId>
-			<version>0.7</version>
+			<version>0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
