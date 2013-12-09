@@ -27,8 +27,10 @@ import fr.norad.jaxrs.client.server.resource.Error;
 import fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils;
 import fr.norad.jaxrs.doc.api.HttpStatus;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> {
 
     private Logger log = LoggerFactory.getLogger(getClass());
