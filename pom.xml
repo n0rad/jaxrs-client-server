@@ -58,6 +58,11 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+        <dependency>
+            <groupId>fr.norad.jaxrs.doc</groupId>
+            <artifactId>jaxrs-doc-api</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
 
 		<!-- TEST -->
 		<dependency>
@@ -66,6 +71,12 @@
 			<version>2.0M10</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.0-rc1</version>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

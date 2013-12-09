@@ -17,10 +17,7 @@
 package fr.norad.jaxrs.client.server.rest;
 
 import static java.util.Arrays.asList;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.ws.rs.core.HttpHeaders;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.endpoint.Server;
@@ -138,16 +135,30 @@ public class RestBuilder {
         return service;
     }
 
-    public Server buildServer(String listenUrl, Object resource) {
-        return buildServer(listenUrl, asList(resource));
+    public Server buildServer(String listenUrl, Class<? extends Object> resourceClass) {
+        List<Class<? extends Object>> classes = new ArrayList<>(1);
+        classes.add(resourceClass);
+        return buildServer(listenUrl, null, classes);
     }
 
-    public Server buildServer(String listenUrl, Collection<?> resources) {
+    public Server buildServer(String listenUrl, Object resource) {
+        return buildServer(listenUrl, asList(resource), null);
+    }
+
+    public Server buildServer(String listenUrl, Class<? extends Object>... resourceClass) {
+        return buildServer(listenUrl, null, asList(resourceClass));
+    }
+
+    public Server buildServer(String listenUrl, List resources, List<Class<? extends Object>> resourceClasses) {
         JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         prepareFactory(listenUrl, sf);
 
-        sf.setServiceBeans(new ArrayList<>(resources));
-        //        factory.setResourceClasses(resources);
+        if (resources != null) {
+            sf.setServiceBeans(resources);
+        }
+        if (resourceClasses != null) {
+            sf.setResourceClasses(resourceClasses);
+        }
         sf.setAddress(listenUrl);
         return sf.create();
     }
