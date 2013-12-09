@@ -50,7 +50,7 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         return (MultivaluedMap<T, U>) p;
     }
 
-    private Error findError(Response r) {
+    protected Error findError(Response r) {
         String contentType = (String) r.getMetadata().getFirst(HttpHeaders.CONTENT_TYPE);
         String content;
         try {

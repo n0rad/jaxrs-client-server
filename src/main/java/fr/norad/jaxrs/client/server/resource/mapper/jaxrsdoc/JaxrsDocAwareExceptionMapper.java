@@ -34,23 +34,24 @@ import lombok.experimental.Accessors;
 public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> {
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    private boolean hideException = false;
+    private boolean hideExceptionClass = false;
     private boolean hideMessage = false;
-    private boolean logError = true;
-    private int defaultExceptionHttpCode = 400;
+    private boolean logRuntimeError = true;
+    private boolean logCheckedError = false;
+    private int defaultCheckedExceptionHttpCode = 400;
     private int defaultRuntimeExceptionHttpCode = 500;
 
     @Override
     public Response toResponse(Exception exception) {
         int httpCode = RuntimeException.class.isAssignableFrom(exception.getClass()) ?
-                defaultRuntimeExceptionHttpCode : defaultExceptionHttpCode;
+                defaultRuntimeExceptionHttpCode : defaultCheckedExceptionHttpCode;
         HttpStatus status = AnnotationUtils.findAnnotation(exception.getClass(), HttpStatus.class);
         if (status != null) {
             httpCode = status.value();
         }
 
         Error error = buildError(exception);
-        if (hideException) {
+        if (hideExceptionClass) {
             error.setException(null);
         }
         if (hideMessage) {
@@ -62,10 +63,14 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
     }
 
     private void logError(Exception exception) {
-        if (logError) {
+        if (RuntimeException.class.isAssignableFrom(exception.getClass())) {
+            if (logRuntimeError) {
+                log.error("Technical exception", exception);
+            }
+        } else {
             if (log.isDebugEnabled()) {
                 log.debug("Respond error", exception);
-            } else {
+            } else if (logCheckedError) {
                 log.info("Respond error : {}", exception.getMessage());
             }
         }
