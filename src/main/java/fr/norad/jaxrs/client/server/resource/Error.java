@@ -30,4 +30,11 @@ public class Error {
     private String message;
     private String type;
 
+    public Error() {
+    }
+
+    public Error(Exception e) {
+        this.exception = e.getClass();
+        this.message = e.getMessage();
+    }
 }

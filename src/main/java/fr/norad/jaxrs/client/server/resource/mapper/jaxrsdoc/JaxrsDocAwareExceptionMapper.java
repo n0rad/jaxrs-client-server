@@ -49,16 +49,23 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
         if (status != null) {
             httpCode = status.value();
         }
-
-        Error error = buildError(exception);
-        if (hideExceptionClass) {
-            error.setException(null);
-        }
-        if (hideMessage) {
-            error.setMessage(null);
-        }
-
         logError(exception);
+
+        Error error;
+        try {
+            error = buildError(exception);
+            if (hideExceptionClass) {
+                error.setException(null);
+            }
+            if (hideMessage) {
+                error.setMessage(null);
+            }
+        } catch (Exception e) {
+            httpCode = 500;
+            error = new Error(e);
+            logError(e);
+        }
+
         return Response.status(httpCode).entity(error).type(findMediaType()).build();
     }
 
@@ -76,7 +83,7 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
         }
     }
 
-    public Error buildError(Exception exception) {
+    public Error buildError(Exception exception) throws Exception {
         return ExceptionMapperUtils.buildError(exception);
     }
 }
