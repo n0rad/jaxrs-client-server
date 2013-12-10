@@ -96,8 +96,6 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
             code = status.value();
         } else if (exception.getClass().equals(NotFoundException.class)) {
             code = HttpStatus.NOT_FOUND_404;
-        } else if (isRuntimeClass(exception.getClass())) {
-            code = HttpStatus.INTERNAL_SERVER_ERROR_500;
         }
         return code;
     }
