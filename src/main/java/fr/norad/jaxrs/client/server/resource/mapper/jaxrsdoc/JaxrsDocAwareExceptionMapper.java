@@ -18,6 +18,7 @@ package fr.norad.jaxrs.client.server.resource.mapper.jaxrsdoc;
 
 
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import org.slf4j.Logger;
@@ -43,16 +44,17 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
 
     @Override
     public Response toResponse(Exception exception) {
-        int httpCode = RuntimeException.class.isAssignableFrom(exception.getClass()) ?
-                defaultRuntimeExceptionHttpCode : defaultCheckedExceptionHttpCode;
-        HttpStatus status = AnnotationUtils.findAnnotation(exception.getClass(), HttpStatus.class);
-        if (status != null) {
-            httpCode = status.value();
-        }
         logError(exception);
 
         Error error;
+        int httpCode = isRuntimeClass(exception.getClass()) ?
+                defaultRuntimeExceptionHttpCode : defaultCheckedExceptionHttpCode;
         try {
+            Integer code = findCode(exception);
+            if (code != null) {
+                httpCode = code;
+            }
+
             error = buildError(exception);
             if (hideExceptionClass) {
                 error.setException(null);
@@ -85,5 +87,22 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
 
     public Error buildError(Exception exception) throws Exception {
         return ExceptionMapperUtils.buildError(exception);
+    }
+
+    public Integer findCode(Exception exception) throws Exception {
+        Integer code = null;
+        HttpStatus status = AnnotationUtils.findAnnotation(exception.getClass(), HttpStatus.class);
+        if (status != null) {
+            code = status.value();
+        } else if (exception.getClass().equals(NotFoundException.class)) {
+            code = HttpStatus.NOT_FOUND_404;
+        } else if (isRuntimeClass(exception.getClass())) {
+            code = HttpStatus.INTERNAL_SERVER_ERROR_500;
+        }
+        return code;
+    }
+
+    public static boolean isRuntimeClass(Class<? extends Exception> e) {
+        return RuntimeException.class.isAssignableFrom(e);
     }
 }

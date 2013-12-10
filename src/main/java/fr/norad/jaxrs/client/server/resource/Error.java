@@ -18,6 +18,7 @@ package fr.norad.jaxrs.client.server.resource;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
@@ -29,6 +30,8 @@ public class Error {
     private Class<? extends Exception> exception;
     private String message;
     private String type;
+    @XmlElement(name = "correlation_id")
+    private String correlationId;
 
     public Error() {
     }
