@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.client.server.resource.Error;
 import fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils;
-import fr.norad.jaxrs.doc.api.HttpStatus;
+import fr.norad.jaxrs.oauth2.HttpStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -93,9 +93,9 @@ public class JaxrsDocAwareExceptionMapper implements ExceptionMapper<Exception> 
         Integer code = null;
         HttpStatus status = AnnotationUtils.findAnnotation(exception.getClass(), HttpStatus.class);
         if (status != null) {
-            code = status.value();
+            code = status.value().getStatusCode();
         } else if (exception.getClass().equals(NotFoundException.class)) {
-            code = HttpStatus.NOT_FOUND_404;
+            code = Response.Status.NOT_FOUND.getStatusCode();
         }
         return code;
     }

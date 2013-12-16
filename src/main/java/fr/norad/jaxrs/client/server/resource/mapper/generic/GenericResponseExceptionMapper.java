@@ -16,12 +16,9 @@
  */
 package fr.norad.jaxrs.client.server.resource.mapper.generic;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.annotation.Annotation;
+import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -50,6 +47,16 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         return (MultivaluedMap<T, U>) p;
     }
 
+    private static String fromStream(InputStream in) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line);
+        }
+        return out.toString();
+    }
+
     protected Error findError(Response r) {
         String contentType = (String) r.getMetadata().getFirst(HttpHeaders.CONTENT_TYPE);
         String content;
@@ -60,7 +67,7 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         }
         if (MediaType.APPLICATION_JSON.equals(contentType)) {
             try {
-                return reader.readFrom(Error.class, Error.class, new Annotation[] {},
+                return reader.readFrom(Error.class, Error.class, new Annotation[]{},
                         MediaType.APPLICATION_JSON_TYPE, cast(r.getMetadata(), String.class, String.class),
                         new ByteArrayInputStream(content.getBytes()));
             } catch (Exception e) {
@@ -84,8 +91,12 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         Exception exception = null;
         if (error.getException() != null) {
             try {
-                exception = error.getException().getConstructor(String.class)
-                        .newInstance(error.getMessage() == null ? "" : error.getMessage());
+                if (ServerErrorException.class == (Class) error.getException()) {
+                    exception = new ServerErrorException(r);
+                } else {
+                    exception = error.getException().getConstructor(String.class)
+                            .newInstance(error.getMessage() == null ? "" : error.getMessage());
+                }
             } catch (Exception e) {
                 try {
                     exception = (Exception) error.getException().getSuperclass().getConstructor(String.class)
@@ -98,15 +109,5 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
             exception = new RuntimeException(error.getMessage() == null ? SERVER_ERROR : error.getMessage());
         }
         return exception;
-    }
-
-    private static String fromStream(InputStream in) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-        StringBuilder out = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            out.append(line);
-        }
-        return out.toString();
     }
 }

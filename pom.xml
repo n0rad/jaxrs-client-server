@@ -27,6 +27,11 @@
 			<artifactId>core</artifactId>
 			<version>0.9-SNAPSHOT</version>
 		</dependency>
+        <dependency>
+            <groupId>fr.norad.jaxrs.oauth2</groupId>
+            <artifactId>jaxrs-oauth2-api</artifactId>
+            <version>0.5-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
