@@ -145,16 +145,21 @@ public class RestBuilder {
         return buildServer(listenUrl, asList(resource), null);
     }
 
+
+    public Server buildServer(String listenUrl, Collection<Object> resource) {
+        return buildServer(listenUrl, resource, null);
+    }
+
     public Server buildServer(String listenUrl, Class<? extends Object>... resourceClass) {
         return buildServer(listenUrl, null, asList(resourceClass));
     }
 
-    public Server buildServer(String listenUrl, List resources, List<Class<? extends Object>> resourceClasses) {
+    public Server buildServer(String listenUrl, Collection resources, List<Class<? extends Object>> resourceClasses) {
         JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         prepareFactory(listenUrl, sf);
 
         if (resources != null) {
-            sf.setServiceBeans(resources);
+            sf.setServiceBeans(new ArrayList<Object>(resources));
         }
         if (resourceClasses != null) {
             sf.setResourceClasses(resourceClasses);
