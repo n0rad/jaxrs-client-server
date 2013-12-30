@@ -66,7 +66,7 @@
         <dependency>
             <groupId>fr.norad.jaxrs.doc</groupId>
             <artifactId>jaxrs-doc-api</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.2</version>
         </dependency>
 
 		<!-- TEST -->
