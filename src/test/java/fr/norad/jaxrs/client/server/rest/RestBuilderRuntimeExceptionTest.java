@@ -19,8 +19,9 @@ package fr.norad.jaxrs.client.server.rest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import org.junit.Test;
-import fr.norad.jaxrs.client.server.rest.RestBuilder;
-import fr.norad.jaxrs.client.server.rest.RestSession;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import fr.norad.jaxrs.client.server.resource.mapper.GenericResponseExceptionMapper;
+import fr.norad.jaxrs.client.server.resource.mapper.JaxrsDocAwareExceptionMapper;
 
 public class RestBuilderRuntimeExceptionTest {
 
@@ -28,7 +29,9 @@ public class RestBuilderRuntimeExceptionTest {
     private RestBuilder context = new RestBuilder();
 
     public RestBuilderRuntimeExceptionTest() {
-        context.withExceptionMapper();
+        context.addProvider(new JacksonJaxbJsonProvider());
+        context.addProvider(new JaxrsDocAwareExceptionMapper());
+        context.addProvider(new GenericResponseExceptionMapper(new JacksonJaxbJsonProvider()));
     }
 
     @Path("/")

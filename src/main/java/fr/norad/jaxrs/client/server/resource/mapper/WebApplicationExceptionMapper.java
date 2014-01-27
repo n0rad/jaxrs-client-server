@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.client.server.resource.mapper.generic;
+package fr.norad.jaxrs.client.server.resource.mapper;
 
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 import javax.ws.rs.ServerErrorException;

@@ -21,11 +21,21 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.junit.Test;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import fr.norad.jaxrs.client.server.resource.mapper.GenericResponseExceptionMapper;
+import fr.norad.jaxrs.client.server.resource.mapper.JaxrsDocAwareExceptionMapper;
 
 public class RestBuilderTest {
 
     private String url = "http://127.0.0.1:54632";
     private RestBuilder context = new RestBuilder();
+
+    public RestBuilderTest() {
+        context.addProvider(new JacksonJaxbJsonProvider());
+        context.addProvider(new JaxrsDocAwareExceptionMapper());
+        context.addProvider(new GenericResponseExceptionMapper(new JacksonJaxbJsonProvider()));
+    }
+
 
     @XmlRootElement
     public static class User {

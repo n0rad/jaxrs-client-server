@@ -17,9 +17,15 @@
 package fr.norad.jaxrs.client.server.rest;
 
 import static java.util.Arrays.asList;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.HttpHeaders;
 import org.apache.cxf.binding.BindingFactoryManager;
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -31,106 +37,123 @@ import org.apache.cxf.jaxrs.client.Client;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.message.Message;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import fr.norad.jaxrs.client.server.resource.mapper.NotFoundExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.UpdateExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.ValidationExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.generic.GenericExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.generic.GenericResponseExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.generic.RuntimeExceptionMapper;
+import org.apache.cxf.transport.http.HTTPConduit;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+/**
+ * context.addProvider(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
+ * context.addProvider(new JaxrsDocAwareExceptionMapper());
+ * context.addProvider(new JacksonJaxbJsonProvider());
+ * context.addProvider(new GenericResponseExceptionMapper(new JacksonJaxbJsonProvider()));
+ * context.addProvider(new WebApplicationExceptionMapper());
+ */
 public class RestBuilder {
 
-    private boolean logExchange = true;
-    private boolean threadSafe;
-    private GenericResponseExceptionMapper responseExceptionMapper;
-    private LoggingInInterceptor inLogger;
-    private LoggingOutInterceptor outLogger;
-    private JacksonJsonProvider jacksonJsonProvider;
+    public static final TrustManager[] TRUST_ALL_CERTS = new TrustManager[]{
+            new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] certs, String authType) {
+                }
+            }
+    };
     private final List<Object> providers = new ArrayList<>();
     private final List<Interceptor<? extends Message>> inInterceptors = new ArrayList<>();
     private final List<Interceptor<? extends Message>> outInterceptors = new ArrayList<>();
+    private final List<Interceptor<? extends Message>> inFaultInterceptors = new ArrayList<>();
+    private final List<Interceptor<? extends Message>> outFaultInterceptors = new ArrayList<>();
+    private boolean threadSafe;
+    private boolean trustAllCertificates;
 
-    public RestBuilder() {
-        inLogger = new LoggingInInterceptor();
-        inLogger.setPrettyLogging(true);
-        inLogger.setOutputLocation("<stdout>");
-        outLogger = new LoggingOutInterceptor();
-        outLogger.setPrettyLogging(true);
-        outLogger.setOutputLocation("<stderr>");
-
-        ObjectMapper restfullObjectMapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL);
-        AnnotationIntrospector pair = new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(),
-                new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
-        restfullObjectMapper.setAnnotationIntrospector(pair);
-        jacksonJsonProvider = new JacksonJsonProvider();
-        jacksonJsonProvider.setMapper(restfullObjectMapper);
-        providers.add(jacksonJsonProvider);
+    public static RestBuilder rest() {
+        return new RestBuilder();
     }
 
-    public RestBuilder withExceptionMapper() {
-        responseExceptionMapper = new GenericResponseExceptionMapper(jacksonJsonProvider);
-        providers.add(responseExceptionMapper);
-        providers.add(new GenericExceptionMapper());
-        providers.add(new NotFoundExceptionMapper());
-        providers.add(new UpdateExceptionMapper());
-        providers.add(new RuntimeExceptionMapper());
-        providers.add(new ValidationExceptionMapper());
-        return this;
-    }
-
-    public RestBuilder threadSafe(){
-        threadSafe = true;
-        return this;
-    }
-
-    public void addProvider(Object provider) {
+    public RestBuilder addProvider(Object provider) {
         this.providers.add(provider);
+        return this;
     }
 
-    public void addAllProvider(Collection<Object> providers) {
+    public RestBuilder addAllProvider(Collection<Object> providers) {
         this.providers.addAll(providers);
+        return this;
     }
 
-    public void addAllInInterceptor(Collection<Interceptor<? extends Message>> inInterceptors) {
+    public RestBuilder addAllInInterceptor(Collection<Interceptor<? extends Message>> inInterceptors) {
         this.inInterceptors.addAll(inInterceptors);
+        return this;
     }
 
-    public void addAllOutInterceptor(Collection<Interceptor<? extends Message>> outInterceptors) {
+    public RestBuilder addAllInFaultInterceptor(Collection<Interceptor<? extends Message>> inInterceptors) {
+        this.inFaultInterceptors.addAll(inInterceptors);
+        return this;
+    }
+
+    public RestBuilder addAllOutInterceptor(Collection<Interceptor<? extends Message>> outInterceptors) {
         this.outInterceptors.addAll(outInterceptors);
+        return this;
     }
 
-    public void addInInterceptor(Interceptor<? extends Message> inInterceptor) {
+    public RestBuilder addAllOutFaultInterceptor(Collection<Interceptor<? extends Message>> outInterceptors) {
+        this.outFaultInterceptors.addAll(outInterceptors);
+        return this;
+    }
+
+    public RestBuilder addInInterceptor(Interceptor<? extends Message> inInterceptor) {
         this.inInterceptors.add(inInterceptor);
+        return this;
     }
 
-    public void addOutInterceptor(Interceptor<? extends Message> outInterceptor) {
+    public RestBuilder addInFaultInterceptor(Interceptor<? extends Message> inInterceptor) {
+        this.inFaultInterceptors.add(inInterceptor);
+        return this;
+    }
+
+    public RestBuilder addOutInterceptor(Interceptor<? extends Message> outInterceptor) {
         this.outInterceptors.add(outInterceptor);
+        return this;
     }
 
-    public <T> T buildClient(Class<T> clazz, String connectionUrl) {
+    public RestBuilder addOutFaultInterceptor(Interceptor<? extends Message> inInterceptor) {
+        this.inInterceptors.add(inInterceptor);
+        return this;
+    }
+
+    public <U> U buildClient(Class<U> clazz, String connectionUrl) {
         return buildClient(clazz, connectionUrl, new RestSession());
     }
 
-    public <T> T buildClient(Class<T> clazz, String connectionUrl, RestSession<?, ?> session) {
+    public <U> U buildClient(Class<U> clazz, String connectionUrl, RestSession<?, ?> session) {
         JAXRSClientFactoryBean cf = new JAXRSClientFactoryBean();
         cf.setThreadSafe(threadSafe);
+
         prepareFactory(connectionUrl, cf);
         cf.setResourceClass(clazz);
         BindingFactoryManager manager = cf.getBus().getExtension(BindingFactoryManager.class);
         JAXRSBindingFactory factory = new JAXRSBindingFactory();
         factory.setBus(cf.getBus());
         manager.registerBindingFactory(JAXRSBindingFactory.JAXRS_BINDING_ID, factory);
-        T service = cf.create(clazz);
+        U service = cf.create(clazz);
         if (session != null) {
             prepareClient(session, WebClient.client(service));
+        }
+        if (trustAllCertificates) {
+            HTTPConduit conduit = WebClient.getConfig(WebClient.client(service)).getHttpConduit();
+            TLSClientParameters params = conduit.getTlsClientParameters();
+            if (params == null) {
+                params = new TLSClientParameters();
+                conduit.setTlsClientParameters(params);
+            }
+            params.setTrustManagers(TRUST_ALL_CERTS);
+            params.setDisableCNCheck(true);
         }
         return service;
     }
@@ -144,7 +167,6 @@ public class RestBuilder {
     public Server buildServer(String listenUrl, Object resource) {
         return buildServer(listenUrl, asList(resource), null);
     }
-
 
     public Server buildServer(String listenUrl, Collection<Object> resource) {
         return buildServer(listenUrl, resource, null);
@@ -171,13 +193,10 @@ public class RestBuilder {
     private void prepareFactory(String address, AbstractJAXRSFactoryBean f) {
         f.setProviders(providers);
 
-        if (logExchange) {
-            f.getInInterceptors().add(inLogger);
-            f.getOutInterceptors().add(outLogger);
-        }
-
         f.getInInterceptors().addAll(inInterceptors);
+        f.getInFaultInterceptors().addAll(inInterceptors);
         f.getOutInterceptors().addAll(outInterceptors);
+        f.getOutFaultInterceptors().addAll(outFaultInterceptors);
 
         f.setAddress(address);
     }
@@ -202,38 +221,72 @@ public class RestBuilder {
         }
     }
 
-    //////////////////////////////////////////////////////////
-
-    public LoggingInInterceptor getInLogger() {
-        return inLogger;
+    public RestBuilder threadSafe(boolean threadSafe) {
+        this.threadSafe = threadSafe;
+        return this;
     }
 
-    public void setInLogger(LoggingInInterceptor inLogger) {
-        this.inLogger = inLogger;
+    /////////////////////////////////////////
+
+    public RestBuilder trustAllCertificates(boolean trustAllCertificates) {
+        this.trustAllCertificates = trustAllCertificates;
+        return this;
     }
 
-    public LoggingOutInterceptor getOutLogger() {
-        return outLogger;
-    }
-
-    public void setOutLogger(LoggingOutInterceptor outLogger) {
-        this.outLogger = outLogger;
-    }
-
-    public boolean isLogExchange() {
-        return logExchange;
-    }
-
-    public void setLogExchange(boolean logExchange) {
-        this.logExchange = logExchange;
-    }
-
-    public List<Object> getProviders() {
+    public List<Object> providers() {
         return providers;
     }
 
-    public JacksonJsonProvider getJacksonJsonProvider() {
-        return jacksonJsonProvider;
+    ////////////////////////////////////////////
+
+    public boolean threadSafe() {
+        return threadSafe;
+    }
+
+    public boolean trustAllCertificates() {
+        return trustAllCertificates;
+    }
+
+    public List<Interceptor<? extends Message>> inInterceptors() {
+        return inInterceptors;
+    }
+
+    public List<Interceptor<? extends Message>> inFaultInterceptors() {
+        return inFaultInterceptors;
+    }
+
+    public List<Interceptor<? extends Message>> outInterceptors() {
+        return outInterceptors;
+    }
+
+    public List<Interceptor<? extends Message>> outFaultInterceptors() {
+        return outFaultInterceptors;
+    }
+
+    @Data
+    @Accessors(fluent = true)
+    public static class Generic {
+
+        public static final LoggingInInterceptor inStdoutLogger;
+        public static final LoggingInInterceptor inStderrLogger;
+        public static final LoggingOutInterceptor outStdoutLogger;
+        public static final LoggingOutInterceptor outStderrLogger;
+
+        static {
+            inStdoutLogger = new LoggingInInterceptor();
+            inStdoutLogger.setPrettyLogging(true);
+            inStdoutLogger.setOutputLocation("<stdout>");
+            inStderrLogger = new LoggingInInterceptor();
+            inStderrLogger.setPrettyLogging(true);
+            inStderrLogger.setOutputLocation("<stderr>");
+            outStdoutLogger = new LoggingOutInterceptor();
+            outStdoutLogger.setPrettyLogging(true);
+            outStdoutLogger.setOutputLocation("<stdout>");
+            outStderrLogger = new LoggingOutInterceptor();
+            outStderrLogger.setPrettyLogging(true);
+            outStderrLogger.setOutputLocation("<stderr>");
+        }
+
     }
 
 }

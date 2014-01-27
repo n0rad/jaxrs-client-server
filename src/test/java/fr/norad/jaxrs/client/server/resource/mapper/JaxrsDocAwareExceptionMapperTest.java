@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.client.server.resource.mapper.jaxrsdoc;
+package fr.norad.jaxrs.client.server.resource.mapper;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,10 +23,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.cxf.endpoint.Server;
 import org.junit.Test;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import fr.norad.core.io.PortFinder;
-import fr.norad.jaxrs.client.server.resource.mapper.generic.GenericResponseExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.mapper.jaxrsdoc.JaxrsDocAwareExceptionMapper;
 import fr.norad.jaxrs.client.server.rest.RestBuilder;
 
 
@@ -57,8 +54,9 @@ public class JaxrsDocAwareExceptionMapperTest {
 
     {
         RestBuilder builder = new RestBuilder();
-        builder.getProviders().add(new JaxrsDocAwareExceptionMapper());
-        builder.getProviders().add(new GenericResponseExceptionMapper(builder.getJacksonJsonProvider()));
+        builder.addProvider(new JaxrsDocAwareExceptionMapper());
+        builder.addProvider(new JacksonJaxbJsonProvider());
+        builder.addProvider(new GenericResponseExceptionMapper(new JacksonJaxbJsonProvider()));
         server = builder.buildServer(url, new ResourceImpl());
         client = builder.buildClient(Resource.class, url);
     }

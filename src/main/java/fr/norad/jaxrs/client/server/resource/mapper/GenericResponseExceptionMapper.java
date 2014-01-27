@@ -14,11 +14,11 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.client.server.resource.mapper.generic;
+package fr.norad.jaxrs.client.server.resource.mapper;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
-import javax.ws.rs.ServerErrorException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -29,7 +29,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import org.apache.cxf.jaxrs.client.ResponseExceptionMapper;
-import fr.norad.jaxrs.client.server.resource.Error;
 
 @Provider
 public class GenericResponseExceptionMapper implements ResponseExceptionMapper<Exception> {
@@ -91,8 +90,8 @@ public class GenericResponseExceptionMapper implements ResponseExceptionMapper<E
         Exception exception = null;
         if (error.getException() != null) {
             try {
-                if (ServerErrorException.class == (Class) error.getException()) {
-                    exception = new ServerErrorException(r);
+                if (WebApplicationException.class.isAssignableFrom(error.getException())) {
+                    exception = error.getException().getConstructor(Response.class).newInstance(r);
                 } else {
                     exception = error.getException().getConstructor(String.class)
                             .newInstance(error.getMessage() == null ? "" : error.getMessage());

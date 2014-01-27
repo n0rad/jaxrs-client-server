@@ -14,7 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-package fr.norad.jaxrs.client.server.resource.mapper.jaxrsdoc;
+package fr.norad.jaxrs.client.server.resource.mapper;
 
 
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
@@ -24,8 +24,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import fr.norad.core.lang.reflect.AnnotationUtils;
-import fr.norad.jaxrs.client.server.resource.Error;
-import fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils;
 import fr.norad.jaxrs.oauth2.HttpStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;

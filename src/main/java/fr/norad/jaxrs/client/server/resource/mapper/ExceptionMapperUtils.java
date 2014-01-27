@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
-import fr.norad.jaxrs.client.server.resource.Error;
+import fr.norad.jaxrs.client.server.resource.mapper.Error;
 
 public final class ExceptionMapperUtils {
 

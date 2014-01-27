@@ -29,6 +29,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import org.apache.cxf.jaxrs.provider.ProviderFactory;
 import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 import org.apache.cxf.message.Message;
+import fr.norad.jaxrs.client.server.resource.mapper.Error;
 
 public class FilterUtils {
 
@@ -36,15 +37,15 @@ public class FilterUtils {
      * That sux but I cannot found another way to do it
      */
     private static byte[] buildErrorPayload(Response excResponse, Message message) {
-        MessageBodyWriter<fr.norad.jaxrs.client.server.resource.Error> createMessageBodyWriter = ProviderFactory.getInstance(
-                message).createMessageBodyWriter(fr.norad.jaxrs.client.server.resource.Error.class,
-                fr.norad.jaxrs.client.server.resource.Error.class, new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE,
+        MessageBodyWriter<Error> createMessageBodyWriter = ProviderFactory.getInstance(
+                message).createMessageBodyWriter(Error.class,
+                Error.class, new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE,
                 message);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
-            createMessageBodyWriter.writeTo((fr.norad.jaxrs.client.server.resource.Error) excResponse.getEntity(),
-                    fr.norad.jaxrs.client.server.resource.Error.class, fr.norad.jaxrs.client.server.resource.Error.class,
+            createMessageBodyWriter.writeTo((Error) excResponse.getEntity(),
+                    Error.class, Error.class,
                     new Annotation[] {}, MediaType.APPLICATION_JSON_TYPE, excResponse.getMetadata(),
                     byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();
