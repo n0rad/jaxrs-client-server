@@ -72,6 +72,7 @@ public class RestBuilder {
     private final List<Interceptor<? extends Message>> outFaultInterceptors = new ArrayList<>();
     private boolean threadSafe;
     private boolean trustAllCertificates;
+    private boolean inheritHeaders;
 
     public static RestBuilder rest() {
         return new RestBuilder();
@@ -134,6 +135,7 @@ public class RestBuilder {
     public <U> U buildClient(Class<U> clazz, String connectionUrl, RestSession<?, ?> session) {
         JAXRSClientFactoryBean cf = new JAXRSClientFactoryBean();
         cf.setThreadSafe(threadSafe);
+        cf.setInheritHeaders(inheritHeaders);
 
         prepareFactory(connectionUrl, cf);
         cf.setResourceClass(clazz);
@@ -223,6 +225,11 @@ public class RestBuilder {
 
     public RestBuilder threadSafe(boolean threadSafe) {
         this.threadSafe = threadSafe;
+        return this;
+    }
+
+    public RestBuilder inheritHeaders(boolean inheritHeaders) {
+        this.inheritHeaders = inheritHeaders;
         return this;
     }
 
