@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jaxrs-client-server-core</artifactId>
+    <name>Jaxrs client server - core</name>
+
+    <parent>
+        <groupId>fr.norad.jaxrs.client.server</groupId>
+        <artifactId>jaxrs-client-server</artifactId>
+        <version>0.8-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.norad.jaxrs.client.server</groupId>
+            <artifactId>jaxrs-client-server-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.norad.core</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <!--
+                <dependency>
+                    <groupId>fr.norad.jaxrs.oauth2</groupId>
+                    <artifactId>jaxrs-oauth2-api</artifactId>
+                    <version>0.7</version>
+                </dependency>
+        -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!--
+                <dependency>
+                    <groupId>fr.norad.jaxrs.doc</groupId>
+                    <artifactId>jaxrs-doc-api</artifactId>
+                    <version>0.2</version>
+                </dependency>
+        -->
+
+        <!-- TEST -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project> 
