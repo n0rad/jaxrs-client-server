@@ -16,6 +16,9 @@
  */
 package fr.norad.jaxrs.client.server.resource.mapper;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static javax.ws.rs.core.MediaType.APPLICATION_XML_TYPE;
+import static javax.ws.rs.core.MediaType.valueOf;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -66,7 +69,7 @@ public class ErrorResponseExceptionMapper implements ResponseExceptionMapper<Exc
         } catch (IOException e1) {
             throw new RuntimeException("Cannot read content of errorModel", e1);
         }
-        if (MediaType.APPLICATION_JSON.equals(contentType)) {
+        if (isNotBlank(contentType) && APPLICATION_JSON_TYPE.isCompatible(valueOf(contentType))) {
             try {
                 return reader.readFrom(Error.class, Error.class, new Annotation[]{},
                         MediaType.APPLICATION_JSON_TYPE, cast(r.getMetadata(), String.class, String.class),
@@ -74,7 +77,7 @@ public class ErrorResponseExceptionMapper implements ResponseExceptionMapper<Exc
             } catch (Exception e) {
                 throw new RuntimeException("Unparsable json errorModel content : " + content, e);
             }
-        } else if (MediaType.APPLICATION_XML.equals(contentType)) {
+        } else if (isNotBlank(contentType) && APPLICATION_XML_TYPE.isCompatible(valueOf(contentType))) {
             try {
                 JAXBContext jc = JAXBContext.newInstance(Error.class);
                 Unmarshaller u = jc.createUnmarshaller();
@@ -84,6 +87,10 @@ public class ErrorResponseExceptionMapper implements ResponseExceptionMapper<Exc
             }
         }
         throw new RuntimeException("Unparsable errorModel content type : " + contentType);
+    }
+
+    private boolean isNotBlank(String contentType) {
+        return contentType != null && !contentType.trim().isEmpty();
     }
 
     @Override
