@@ -22,18 +22,20 @@ import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.junit.Test;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import fr.norad.core.io.PortFinder;
 import fr.norad.jaxrs.client.server.resource.mapper.ErrorExceptionMapper;
 import fr.norad.jaxrs.client.server.resource.mapper.ErrorResponseExceptionMapper;
 
 public class RestBuilderTest {
 
-    private String url = "http://127.0.0.1:54632";
+    private String url = "http://localhost:" + PortFinder.randomAvailable();
     private RestBuilder context = new RestBuilder();
 
     public RestBuilderTest() {
         context.addProvider(new JacksonJaxbJsonProvider());
         context.addProvider(new ErrorExceptionMapper());
         context.addProvider(new ErrorResponseExceptionMapper(new JacksonJaxbJsonProvider()));
+        context.buildServer(url, new UsersService());
     }
 
 
@@ -58,7 +60,6 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_default() throws Exception {
-        context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url);
 
         User user = resource.getUser();
@@ -68,7 +69,6 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_xml() throws Exception {
-        context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         User user = resource.getUser();
@@ -78,7 +78,6 @@ public class RestBuilderTest {
 
     @Test
     public void should_transfert_json() throws Exception {
-        context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         User user = resource.getUser();

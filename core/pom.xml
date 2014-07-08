@@ -20,13 +20,6 @@
             <groupId>fr.norad.core</groupId>
             <artifactId>core</artifactId>
         </dependency>
-        <!--
-                <dependency>
-                    <groupId>fr.norad.jaxrs.oauth2</groupId>
-                    <artifactId>jaxrs-oauth2-api</artifactId>
-                    <version>0.7</version>
-                </dependency>
-        -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -39,13 +32,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!--
-                <dependency>
-                    <groupId>fr.norad.jaxrs.doc</groupId>
-                    <artifactId>jaxrs-doc-api</artifactId>
-                    <version>0.2</version>
-                </dependency>
-        -->
 
         <!-- TEST -->
         <dependency>

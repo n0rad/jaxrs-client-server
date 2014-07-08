@@ -20,18 +20,20 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import org.junit.Test;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import fr.norad.core.io.PortFinder;
 import fr.norad.jaxrs.client.server.resource.mapper.ErrorResponseExceptionMapper;
 import fr.norad.jaxrs.client.server.resource.mapper.ErrorExceptionMapper;
 
 public class RestBuilderRuntimeExceptionTest {
 
-    private String url = "http://127.0.0.1:54632";
+    private String url = "http://localhost:" + PortFinder.randomAvailable();
     private RestBuilder context = new RestBuilder();
 
     public RestBuilderRuntimeExceptionTest() {
         context.addProvider(new JacksonJaxbJsonProvider());
         context.addProvider(new ErrorExceptionMapper());
         context.addProvider(new ErrorResponseExceptionMapper(new JacksonJaxbJsonProvider()));
+        context.buildServer(url, new UsersService());
     }
 
     @Path("/")
@@ -49,7 +51,6 @@ public class RestBuilderRuntimeExceptionTest {
 
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_json() throws Exception {
-        context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asJson());
 
         resource.getUser();
@@ -57,7 +58,6 @@ public class RestBuilderRuntimeExceptionTest {
 
     @Test(expected = SecurityException.class)
     public void should_receive_runtimeException_in_xml() throws Exception {
-        context.buildServer(url, new UsersService());
         UsersResource resource = context.buildClient(UsersResource.class, url, new RestSession().asXml());
 
         resource.getUser();
