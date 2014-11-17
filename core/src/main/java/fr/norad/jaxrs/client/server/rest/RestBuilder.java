@@ -38,6 +38,7 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -73,9 +74,21 @@ public class RestBuilder {
     private boolean threadSafe;
     private boolean trustAllCertificates;
     private boolean inheritHeaders;
+    private Long connectionTimeout;
+    private Long receivedTimeout;
 
     public static RestBuilder rest() {
         return new RestBuilder();
+    }
+
+    public RestBuilder connectionTimeout(Long connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    public RestBuilder receiveTimeout(Long receivedTimeout) {
+        this.receivedTimeout = receivedTimeout;
+        return this;
     }
 
     public RestBuilder addProvider(Object provider) {
@@ -156,6 +169,14 @@ public class RestBuilder {
             }
             params.setTrustManagers(TRUST_ALL_CERTS);
             params.setDisableCNCheck(true);
+        }
+
+        HTTPClientPolicy clientPolicy = WebClient.getConfig(service).getHttpConduit().getClient();
+        if (connectionTimeout != null) {
+            clientPolicy.setConnectionTimeout(connectionTimeout);
+        }
+        if (receivedTimeout != null) {
+            clientPolicy.setReceiveTimeout(receivedTimeout);
         }
         return service;
     }
