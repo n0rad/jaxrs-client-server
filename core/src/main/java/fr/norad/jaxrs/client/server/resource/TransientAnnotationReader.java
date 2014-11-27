@@ -36,7 +36,6 @@ import com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
  * XmlTransient. Note that "<tt>@XmlTransient</tt> is mutually exclusive with all other JAXB defined annotations.
  * </p>
  * 
- * <p>
  * Usage:
  * 
  * <pre>
@@ -46,17 +45,17 @@ import com.sun.xml.bind.v2.model.annotation.RuntimeInlineAnnotationReader;
  *     reader.addTransientMethod(Throwable.class.getDeclaredMethod("getStackTrace"));
  * 
  *     // initialize JAXB context
+ *     {@code
  *     Map<String, Object> jaxbConfig = new HashMap<String, Object>();
  *     jaxbConfig.put(JAXBRIContext.ANNOTATION_READER, reader);
  *     JAXBContext ctx = JAXBContext.newInstance (PACKAGE_PATH, TransientAnnotationReader.class.getClassLoader(), jaxbConfig);
- * 
+ *
  *     // XMLlize something
  *     Marshaller m = ctx.create ();
  *     m.marshal (...);
+ *     }
  * </pre>
- * 
- * </p>
- * 
+ *
  * @see <a href="http://wiki.jboss.org/wiki/Wiki.jsp?page=JAXBIntroductions">JAXB Introductions</a>
  * 
  * @author Andy Malakov
