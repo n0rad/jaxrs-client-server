@@ -7,7 +7,7 @@
     <name>Jaxrs client server</name>
     <description>Jax-rs client and server builder allowing pure java method calls to communicate using proxies
     </description>
-    <version>0.10</version>
+    <version>0.10-SNAPSHOT</version>
 
     <parent>
         <groupId>fr.norad.parent</groupId>
@@ -19,7 +19,7 @@
         <connection>scm:git:git://github.com/n0rad/jaxrs-client-server.git</connection>
         <developerConnection>scm:git:git@github.com:n0rad/jaxrs-client-server.git</developerConnection>
         <url>https://github.com/n0rad/jaxrs-client-server</url>
-        <tag>jaxrs-client-server-0.10</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
