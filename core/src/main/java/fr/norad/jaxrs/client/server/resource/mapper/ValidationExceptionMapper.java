@@ -18,6 +18,8 @@ package fr.norad.jaxrs.client.server.resource.mapper;
 
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.buildError;
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -32,15 +34,29 @@ import org.slf4j.LoggerFactory;
 @Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
     private Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final String RESPOND = "Respond ValidationException";
+    private static final String RESPOND = "Respond ValidationException {}";
 
     @Override
     public Response toResponse(ValidationException exception) {
-        if (log.isDebugEnabled()) {
-            log.debug(RESPOND, exception);
-        } else {
-            log.info(RESPOND, exception.getMessage());
+        Error o = buildError(exception);
+        if (exception instanceof ConstraintViolationException && o.getMessage() == null) {
+            final StringBuilder message = new StringBuilder(50);
+            int i = 0;
+            for (ConstraintViolation<?> constraintViolation : ((ConstraintViolationException) exception).getConstraintViolations()) {
+                if (i++ > 0) {
+                    message.append(", ");
+                }
+                message.append(constraintViolation.getPropertyPath());
+                message.append(" -> ");
+                message.append(constraintViolation.getMessage());
+            }
+            o.setMessage(message.toString());
         }
-        return Response.status(Status.BAD_REQUEST).entity(buildError(exception)).type(findMediaType()).build();
+        if (log.isDebugEnabled()) {
+            log.debug(RESPOND, o.getMessage(), exception);
+        } else {
+            log.info(RESPOND, o.getMessage());
+        }
+        return Response.status(Status.BAD_REQUEST).entity(o).type(findMediaType()).build();
     }
 }
