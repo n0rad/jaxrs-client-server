@@ -19,6 +19,7 @@ package fr.norad.jaxrs.client.server.resource.mapper;
 
 import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class ErrorExceptionMapper implements ExceptionMapper<Exception> {
     private boolean logCheckedError = false;
     private int defaultCheckedExceptionHttpCode = 400;
     private int defaultRuntimeExceptionHttpCode = 500;
+    private MediaType defaultMediaType;
 
     @Override
     public Response toResponse(Exception exception) {
@@ -66,7 +68,9 @@ public class ErrorExceptionMapper implements ExceptionMapper<Exception> {
             logError(e);
         }
 
-        return Response.status(httpCode).entity(error).type(findMediaType()).build();
+        MediaType mediaType = (null != defaultMediaType) ? defaultMediaType : findMediaType();
+
+        return Response.status(httpCode).entity(error).type(mediaType).build();
     }
 
     private void logError(Exception exception) {

@@ -21,6 +21,7 @@ import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private static final String RESPOND = "Respond ValidationException {}";
+    private MediaType defaultMediaType;
 
     @Override
     public Response toResponse(ValidationException exception) {
@@ -57,6 +59,9 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
         } else {
             log.info(RESPOND, o.getMessage());
         }
-        return Response.status(Status.BAD_REQUEST).entity(o).type(findMediaType()).build();
+
+        MediaType mediaType = (null != defaultMediaType) ? defaultMediaType : findMediaType();
+
+        return Response.status(Status.BAD_REQUEST).entity(o).type(mediaType).build();
     }
 }
