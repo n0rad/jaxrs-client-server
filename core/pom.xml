@@ -7,7 +7,7 @@
     <parent>
         <groupId>fr.norad.jaxrs.client.server</groupId>
         <artifactId>jaxrs-client-server</artifactId>
-        <version>0.13-SNAPSHOT</version>
+        <version>0.13</version>
     </parent>
 
     <dependencies>
