@@ -26,12 +26,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * TODO should be replace by javax.ws.rs.ValidationException processing
  */
+@Data
 @Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
     private Logger log = LoggerFactory.getLogger(this.getClass());
