@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.norad.jaxrs.client.server</groupId>
@@ -8,7 +7,7 @@
     <name>Jaxrs client server</name>
     <description>Jax-rs client and server builder allowing pure java method calls to communicate using proxies
     </description>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
 
     <parent>
         <groupId>fr.norad.parent</groupId>
@@ -20,7 +19,7 @@
         <connection>scm:git:git://github.com/n0rad/jaxrs-client-server.git</connection>
         <developerConnection>scm:git:git@github.com:n0rad/jaxrs-client-server.git</developerConnection>
         <url>https://github.com/n0rad/jaxrs-client-server</url>
-        <tag>HEAD</tag>
+        <tag>jaxrs-client-server-0.14</tag>
     </scm>
 
     <modules>
