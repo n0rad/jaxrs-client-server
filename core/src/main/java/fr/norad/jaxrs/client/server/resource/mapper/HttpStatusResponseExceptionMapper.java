@@ -16,41 +16,35 @@
  */
 package fr.norad.jaxrs.client.server.resource.mapper;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import org.apache.cxf.jaxrs.client.ResponseExceptionMapper;
-import org.apache.cxf.message.Message;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.client.server.api.HttpStatus;
+import org.apache.cxf.jaxrs.client.ResponseExceptionMapper;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
 public class HttpStatusResponseExceptionMapper implements ResponseExceptionMapper<Exception> {
+
+
+    private List<Class<? extends Exception>> exceptionClasses;
+
+    public HttpStatusResponseExceptionMapper(List<Class<? extends Exception>> exceptionClasses) {
+        this.exceptionClasses = exceptionClasses;
+    }
+
     @Override
     public Exception fromResponse(Response r) {
         Status responseStatus = Status.fromStatusCode(r.getStatus());
-        Class<?>[] exceptions = findExceptions(r);
-        for (Class<?> exception : exceptions) {
+        for (Class<?> exception : exceptionClasses) {
             HttpStatus status = AnnotationUtils.findAnnotation(exception, HttpStatus.class);
-            if (responseStatus.equals(status.value())) {
+            if (status != null && responseStatus.equals(status.value())) {
                 Error error = new Error();
                 error.setException((Class<? extends Exception>) exception);
                 return ExceptionMapperUtils.buildException(r, error);
             }
         }
         return null;
-    }
-
-    public Class<?>[] findExceptions(Response r) {
-        try {
-            Field f = r.getClass().getDeclaredField("responseMessage"); // I know
-            f.setAccessible(true);
-            Message message = (Message) f.get(r);
-            Method method = message.getExchange().get(Method.class);
-            return method.getExceptionTypes();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-        }
-        return new Class<?>[0];
     }
 
 }

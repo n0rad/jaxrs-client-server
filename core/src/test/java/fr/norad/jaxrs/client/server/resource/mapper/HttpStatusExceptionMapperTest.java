@@ -17,11 +17,14 @@
 package fr.norad.jaxrs.client.server.resource.mapper;
 
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import org.junit.Test;
 import fr.norad.core.io.PortFinder;
 import fr.norad.jaxrs.client.server.rest.RestBuilder;
+import org.junit.Test;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+import static java.util.Arrays.asList;
 
 public class HttpStatusExceptionMapperTest {
 
@@ -33,7 +36,7 @@ public class HttpStatusExceptionMapperTest {
             .addOutFaultInterceptor(RestBuilder.Generic.outStderrLogger)
             .addOutInterceptor(RestBuilder.Generic.outStdoutLogger)
             .addProvider(new HttpStatusExceptionMapper())
-            .addProvider(new HttpStatusResponseExceptionMapper());
+            .addProvider(new HttpStatusResponseExceptionMapper(asList(IllegalStateException.class, ForTestNotFoundException.class)));
     private final SimpleInterface resource;
 
     public HttpStatusExceptionMapperTest() {

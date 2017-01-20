@@ -17,17 +17,19 @@
 package fr.norad.jaxrs.client.server.resource.mapper;
 
 
-import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.norad.core.lang.reflect.AnnotationUtils;
 import fr.norad.jaxrs.client.server.api.HttpStatus;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+
+import static fr.norad.jaxrs.client.server.resource.mapper.ExceptionMapperUtils.findMediaType;
 
 @Data
 @Accessors(chain = true)
@@ -69,7 +71,9 @@ public class ErrorExceptionMapper implements ExceptionMapper<Exception> {
         }
 
         MediaType mediaType = (null != defaultMediaType) ? defaultMediaType : findMediaType();
-
+        if (mediaType.isWildcardSubtype() && mediaType.isWildcardType()) {
+            mediaType = MediaType.APPLICATION_JSON_TYPE;
+        }
         return Response.status(httpCode).entity(error).type(mediaType).build();
     }
 
